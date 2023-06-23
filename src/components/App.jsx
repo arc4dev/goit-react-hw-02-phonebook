@@ -56,7 +56,7 @@ class App extends Component {
   };
 
   deleteContact = e => {
-    // find id
+    // find idd
     const index = this.state.contacts.findIndex(
       contact => contact.name === e.target.id
     );
