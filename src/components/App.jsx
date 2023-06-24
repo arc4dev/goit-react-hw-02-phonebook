@@ -18,22 +18,28 @@ class App extends Component {
   addContact = e => {
     e.preventDefault();
 
-    // init user
-    const name = e.target.elements.name.value.trim();
-    const number = e.target.elements.number.value.trim();
-    const user = {
-      id: nanoid(9),
-      name,
-      number,
-    };
+    const name = e.target.elements.name;
+    const number = e.target.elements.number;
 
     // check if the user exists
     if (
       this.state.contacts.some(
-        contact => contact.name.toLowerCase() === name.toLowerCase()
+        contact => contact.name.toLowerCase() === name.value.toLowerCase()
       )
     )
-      return alert(`${name} jest juz w liscie kontaktow!`);
+      return alert(`${name.value.trim()} jest juz w liscie kontaktow!`);
+
+    // init user
+
+    const user = {
+      id: nanoid(9),
+      name: name.value.trim(),
+      number: number.value.trim(),
+    };
+
+    // check if the user patterns are valid
+    if (!this.validatePattern(name) || !this.validatePattern(number))
+      return alert('Twoj numer lub imie maja zly format. Sprobuj ponownie!');
 
     // set state
     this.setState(state => ({
@@ -41,6 +47,11 @@ class App extends Component {
     }));
 
     e.target.reset();
+  };
+
+  validatePattern = htmlInput => {
+    const pattern = new RegExp(htmlInput.pattern);
+    return pattern.test(htmlInput.value);
   };
 
   handleFilterChange = e => {
